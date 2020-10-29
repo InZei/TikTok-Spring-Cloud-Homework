@@ -6,11 +6,12 @@
 
     <groupId>length</groupId>
     <artifactId>length</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
 
     <modules>
         <module>eureka</module>
         <module>user</module>
+        <module>video</module>
         <module>gateway</module>
     </modules>
 </project>
