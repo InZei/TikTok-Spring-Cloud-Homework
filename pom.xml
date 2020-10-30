@@ -4,9 +4,21 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.3.4.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+
     <groupId>length</groupId>
     <artifactId>length</artifactId>
     <version>1.0</version>
+
+
+
+
 
     <modules>
         <module>eureka</module>
@@ -14,4 +26,96 @@
         <module>video</module>
         <module>gateway</module>
     </modules>
+
+
+    <!--<build>-->
+        <!--<plugins>-->
+            <!--<plugin>-->
+                <!--<groupId>org.springframework.boot</groupId>-->
+                <!--<artifactId>spring-boot-maven-plugin</artifactId>-->
+            <!--</plugin>-->
+            <!--<plugin>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-resources-plugin</artifactId>-->
+                <!--<version>3.1.0</version>-->
+                <!--&lt;!&ndash;使用默认的变量分割符即${}&ndash;&gt;-->
+                <!--<configuration>-->
+                    <!--<useDefaultDelimiters>true</useDefaultDelimiters>-->
+                <!--</configuration>-->
+            <!--</plugin>-->
+        <!--</plugins>-->
+
+        <!--&lt;!&ndash; 测试文件的编译路径设置 &ndash;&gt;-->
+        <!--<testResources>-->
+            <!--<testResource>-->
+                <!--&lt;!&ndash;这里是关键！ 根据不同的环境，把对应文件夹里的配置文件打包&ndash;&gt;-->
+                <!--<directory>src/main/resources</directory>-->
+                <!--<includes>-->
+                    <!--<include>application.yml</include>-->
+                <!--</includes>-->
+                <!--<filtering>true</filtering>-->
+            <!--</testResource>-->
+
+            <!--<testResource>-->
+                <!--&lt;!&ndash;这里是关键！ 根据不同的环境，把对应文件夹里的配置文件打包&ndash;&gt;-->
+                <!--<directory>src/main/resources/${profiles.active}</directory>-->
+                <!--<includes>-->
+                    <!--<include>**/*.yml</include>-->
+                <!--</includes>-->
+                <!--<filtering>false</filtering>-->
+            <!--</testResource>-->
+        <!--</testResources>-->
+
+        <!--<resources>-->
+            <!--<resource>-->
+                <!--&lt;!&ndash;打包该目录下的 application.yml &ndash;&gt;-->
+                <!--<directory>src/main/resources</directory>-->
+                <!--<includes>-->
+                    <!--<include>application.yml</include>-->
+                <!--</includes>-->
+                <!--&lt;!&ndash; 启用过滤 即该资源中的变量将会被过滤器中的值替换 &ndash;&gt;-->
+                <!--<filtering>true</filtering>-->
+            <!--</resource>-->
+            <!--<resource>-->
+                <!--<directory>src/main/resources</directory>-->
+                <!--<includes>-->
+                    <!--<include>**/*.properties</include>-->
+                    <!--<include>**/*.xml</include>-->
+                <!--</includes>-->
+                <!--<filtering>false</filtering>-->
+            <!--</resource>-->
+            <!--<resource>-->
+                <!--&lt;!&ndash; ${profiles.active}由profile提供 &ndash;&gt;-->
+                <!--<directory>src/main/resources/${profiles.active}</directory>-->
+                <!--<includes>-->
+                    <!--<include>**/*.yml</include>-->
+                <!--</includes>-->
+                <!--<filtering>false</filtering>-->
+            <!--</resource>-->
+
+        <!--</resources>-->
+
+        <!--&lt;!&ndash; 定义 filter,即该资源中的值将会用来替换同名属性（设置 filtering 为 true 的资源中的属性）&ndash;&gt;-->
+        <!--<filters>-->
+            <!--<filter>-->
+                <!--src/main/resources/application-${profiles.active}.yml-->
+            <!--</filter>-->
+        <!--</filters>-->
+    <!--</build>-->
+
+    <profiles>
+        <profile>
+            <!-- 本地开发环境 -->
+            <id>dev</id>
+            <properties>
+                <profiles.active>dev</profiles.active>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+
+        </profile>
+
+    </profiles>
+
 </project>
