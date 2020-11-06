@@ -1,7 +1,7 @@
 package com.length.video.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.length.video.entity.Video;
+        import com.baomidou.mybatisplus.extension.service.IService;
+        import com.length.video.entity.Video;
 
 /**
  * (Video)表服务接口
