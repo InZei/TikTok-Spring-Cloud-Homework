@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.length.video.dao.FollowDao">
+
+    <resultMap id="BaseResultMap" type="com.length.video.entity.Follow">
+        <!--@Table follow-->
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+        <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+        <result property="updateDate" column="update_date" jdbcType="TIMESTAMP"/>
+        <result property="followId" column="follow_id" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          id, create_by, create_date, update_date, follow_id
+        from tiktok_homework.follow
+        <where>
+            <if test="follow.id != null and follow.id != ''">
+                and id = #{follow.id}
+            </if>
+            <if test="follow.createBy != null and follow.createBy != ''">
+                and create_by = #{follow.createBy}
+            </if>
+            <if test="follow.createDate != null">
+                and create_date = #{follow.createDate}
+            </if>
+            <if test="follow.updateDate != null">
+                and update_date = #{follow.updateDate}
+            </if>
+            <if test="follow.followId != null and follow.followId != ''">
+                and follow_id = #{follow.followId}
+            </if>
+        </where>
+        <if test="orderBy != null and orderBy!=''">
+            order BY #{orderBy}
+        </if>
+
+        <if test="begin!=null and begin!=-1">
+            limit #{begin},#{count}
+        </if>
+
+    </select>
+
+
+</mapper>

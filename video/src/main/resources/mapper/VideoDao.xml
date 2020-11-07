@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.length.video.dao.VideoDao">
+
+    <parameterMap id="ParameterMap" type="com.length.video.entity.Video">
+        <parameter property="id" jdbcType="VARCHAR"/>
+        <parameter property="createBy" jdbcType="VARCHAR"/>
+        <parameter property="createDate"  jdbcType="TIMESTAMP"/>
+        <parameter property="updateDate" jdbcType="TIMESTAMP"/>
+        <parameter property="remarks"  jdbcType="VARCHAR"/>
+        <parameter property="videoUrl"  jdbcType="VARCHAR"/>
+        <parameter property="type"  jdbcType="INTEGER"/>
+        <parameter property="name" jdbcType="VARCHAR"/>
+    </parameterMap>
+
+
+    <resultMap id="BaseResultMap" type="com.length.video.entity.Video">
+        <!--@Table video-->
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+        <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+        <result property="updateDate" column="update_date" jdbcType="TIMESTAMP"/>
+        <result property="remarks" column="remarks" jdbcType="VARCHAR"/>
+        <result property="videoUrl" column="video_url" jdbcType="VARCHAR"/>
+        <result property="type" column="type" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select *
+        from video
+        <where>
+            <if test="video.id != null and video.id != ''">
+                and id like CONCAT('%',#{video.id},'%')
+            </if>
+            <if test="video.name != null and video.name != ''">
+                and name like concat('%',#{video.name},'%')
+            </if>
+            <if test="video.createBy != null and video.createBy != ''">
+                and create_by like concat('%',#{video.createBy},'%')
+            </if>
+            <if test="video.createDate != null">
+                and create_date like concat('%',#{video.createDate},'%')
+            </if>
+            <if test="video.updateDate != null">
+                and update_date like concat('%',#{video.updateDate},'%')
+            </if>
+            <if test="video.remarks != null and video.remarks != ''">
+                and remarks like concat('%',#{video.remarks},'%')
+            </if>
+            <if test="video.videoUrl != null and video.videoUrl != ''">
+                and video_url like concat('%',#{video.videoUrl},'%')
+            </if>
+            <if test="video.type != null and video.type!=-1">
+                and type like concat('%',#{video.type},'%')
+            </if>
+        </where>
+        <if test="orderBy != null and orderBy!=''">
+            order BY #{orderBy}
+        </if>
+        <if test="begin!=null and begin!=-1">
+            limit #{begin},#{count}
+        </if>
+    </select>
+
+</mapper>
