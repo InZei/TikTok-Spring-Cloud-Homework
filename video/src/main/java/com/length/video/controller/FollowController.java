@@ -6,7 +6,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.api.ApiController;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.length.video.dao.PageDao;
 import com.length.video.entity.Follow;
+import com.length.video.entity.Likes;
 import com.length.video.service.FollowService;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,17 +31,18 @@ public class FollowController extends ApiController {
     @Resource
     private FollowService followService;
 
+
     /**
      * 分页查询所有数据
      *
      * @param page 分页对象
-     * @param follow 查询实体
      * @return 所有数据
      */
     @GetMapping
-    public R selectAll(Page<Follow> page, Follow follow) {
-        return success(this.followService.page(page, new QueryWrapper<>(follow)));
+    public R queryAll(PageDao page, Follow follow) {
+        return success(this.followService.queryAll(page,follow));
     }
+
 
     /**
      * 通过主键查询单条数据

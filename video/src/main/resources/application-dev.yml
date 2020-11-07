@@ -2,6 +2,11 @@ server:
   port: 8011
 
 spring:
+  servlet:
+    multipart:
+      max-file-size: 1GB
+      max-request-size: 1GB
+
   datasource:
     url: jdbc:mysql://10.62.10.100:3306/tiktok_homework?useUnicode=true&characterEncoding=utf8&useSSL=false
     username: root

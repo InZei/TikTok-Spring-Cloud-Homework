@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.api.ApiController;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.length.video.dao.PageDao;
 import com.length.video.entity.Likes;
 import com.length.video.service.LikesService;
 import org.springframework.web.bind.annotation.*;
@@ -29,17 +30,18 @@ public class LikesController extends ApiController {
     @Resource
     private LikesService likesService;
 
+
     /**
      * 分页查询所有数据
      *
      * @param page 分页对象
-     * @param likes 查询实体
      * @return 所有数据
      */
     @GetMapping
-    public R selectAll(Page<Likes> page, Likes likes) {
-        return success(this.likesService.page(page, new QueryWrapper<>(likes)));
+    public R queryAll(PageDao page, Likes likes) {
+        return success(this.likesService.queryAll(page,likes));
     }
+
 
     /**
      * 通过主键查询单条数据

@@ -27,8 +27,26 @@ public class Video extends Model<Video> {
     private String remarks;
     
     private String videoUrl;
-    
+
+    private String name;
+
     private Integer type;
+
+    Video(){
+
+        createBy="";
+        remarks="";
+        name="";
+        videoUrl="";
+        remarks="";
+        type=-1;
+
+    }
+
+    public void setTime(){
+        createDate=new Date();
+        updateDate=new Date();
+    }
 
     /**
      * 获取主键值

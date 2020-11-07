@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.length.video.entity.Follow;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * (Follow)表数据库访问层
  *
@@ -12,5 +14,5 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface FollowDao extends BaseMapper<Follow> {
-
+    List<Follow> queryAll(Follow follow, String orderBy, int begin, int count);
 }

@@ -6,7 +6,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.api.ApiController;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.length.video.dao.PageDao;
 import com.length.video.entity.Remark;
+import com.length.video.entity.Video;
 import com.length.video.service.RemarkService;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,16 +31,16 @@ public class RemarkController extends ApiController {
     @Resource
     private RemarkService remarkService;
 
+
     /**
      * 分页查询所有数据
      *
      * @param page 分页对象
-     * @param remark 查询实体
      * @return 所有数据
      */
     @GetMapping
-    public R selectAll(Page<Remark> page, Remark remark) {
-        return success(this.remarkService.page(page, new QueryWrapper<>(remark)));
+    public R queryAll(PageDao page, Remark remark) {
+        return success(this.remarkService.queryAll(page,remark));
     }
 
     /**

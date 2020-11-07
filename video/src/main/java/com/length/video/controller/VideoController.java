@@ -6,13 +6,25 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.api.ApiController;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.google.common.reflect.ClassPath;
+import com.length.video.dao.PageDao;
 import com.length.video.entity.Video;
 import com.length.video.service.VideoService;
+import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * (Video)表控制层
@@ -33,12 +45,17 @@ public class VideoController extends ApiController {
      * 分页查询所有数据
      *
      * @param page 分页对象
-     * @param video 查询实体
      * @return 所有数据
      */
     @GetMapping
-    public R selectAll(Page<Video> page, Video video) {
-        return success(this.videoService.page(page, new QueryWrapper<>(video)));
+    public R queryAll(PageDao page,Video video) {
+        return success(this.videoService.queryAll(page,video));
+    }
+
+    @JsonBackReference
+    @GetMapping("/sendVideo")
+    public void  sendVideo( @RequestParam String path, HttpServletResponse response){
+        this.videoService.sendVideo(response,path);
     }
 
     /**
@@ -59,7 +76,25 @@ public class VideoController extends ApiController {
      * @return 新增结果
      */
     @PostMapping
-    public R insert(@RequestBody Video video) {
+    public R insert(Video video,@RequestParam("file") MultipartFile file, HttpServletRequest request) {
+        video.setId(UUID.randomUUID().toString());
+        video.setTime();
+        try{
+            String pikId = UUID.randomUUID().toString().replaceAll("-", "");
+            String fileExt = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1)
+                    .toLowerCase();
+            String path=System.getProperty("user.dir")+"/source"+"/video/"+String.valueOf(video.getType())+"/";
+            System.out.println(path);
+            File dir = new File(path);
+            File fileSave = new File(path, pikId+"."+fileExt);
+            if(!dir.exists()){
+                dir.mkdir();
+            }
+            file.transferTo(fileSave);
+            video.setVideoUrl(path+pikId+"."+fileExt);
+        }catch (IOException e){
+            e.fillInStackTrace();
+        }
         return success(this.videoService.save(video));
     }
 
@@ -71,6 +106,7 @@ public class VideoController extends ApiController {
      */
     @PutMapping
     public R update(@RequestBody Video video) {
+        video.setUpdateDate(new Date());
         return success(this.videoService.updateById(video));
     }
 
