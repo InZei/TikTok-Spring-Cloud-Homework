@@ -54,6 +54,7 @@ public class VideoController extends ApiController {
 
 
     /**
+<<<<<<< HEAD
      *
      * @param begin
      * @param count
@@ -74,6 +75,14 @@ public class VideoController extends ApiController {
         this.videoService.sendVideo(response,path);
     }
 
+
+    @GetMapping("sendCover")
+    public void sendCover(@RequestParam String id, HttpServletResponse response){
+        Video video=this.videoService.getById(id);
+        String path=System.getProperty("user.dir")+"/source"+"/image/"+"cover/"+video.getCoverUrl();
+        this.videoService.sendCover(response,path);
+    }
+
     /**
      * 通过主键查询单条数据
      *
@@ -92,23 +101,33 @@ public class VideoController extends ApiController {
      * @return 新增结果
      */
     @PostMapping
-    public R insert(Video video,@RequestParam("file") MultipartFile file, HttpServletRequest request) {
+    public R insert(Video video,@RequestParam("file") MultipartFile file, @RequestParam("cover") MultipartFile cover, HttpServletRequest request) {
         video.setId(UUID.randomUUID().toString());
         video.setTime();
         try{
             String pikId = UUID.randomUUID().toString().replaceAll("-", "");
             String fileExt = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1)
                     .toLowerCase();
-            String path=System.getProperty("user.dir")
-                    +"/source"+"/video/"+String.valueOf(video.getType())+"/";
-            System.out.println(path);
+            String coverExt=cover.getOriginalFilename().substring(cover.getOriginalFilename().lastIndexOf(".") + 1)
+                    .toLowerCase();
+            String path=System.getProperty("user.dir")+"/source"+"/video/"+String.valueOf(video.getType())+"/";
+            String coverpath=System.getProperty("user.dir")+"/source"+"/image/"+"cover/";
             File dir = new File(path);
             File fileSave = new File(path, pikId+"."+fileExt);
             if(!dir.exists()){
-                boolean re=dir.mkdirs();
+                dir.mkdirs();
             }
             file.transferTo(fileSave);
             video.setVideoUrl(pikId+"."+fileExt);
+
+            File coverdir=new File(coverpath);
+            File coverSave=new File(coverpath,pikId+"."+coverExt);
+            if(!coverdir.exists()){
+                coverdir.mkdirs();
+            }
+            cover.transferTo(coverSave);
+            video.setCoverUrl(pikId+"."+coverExt);
+
         }catch (IOException e){
             e.fillInStackTrace();
         }

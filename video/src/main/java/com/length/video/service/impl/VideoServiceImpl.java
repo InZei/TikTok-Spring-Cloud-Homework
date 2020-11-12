@@ -72,6 +72,40 @@ public class VideoServiceImpl extends ServiceImpl<VideoDao, Video> implements Vi
         return res;
     }
 
+    public void sendCover(HttpServletResponse response,String path){
+        String file = path;
+        try {
+            FileInputStream inputStream = new FileInputStream(file);
+            String filename=path.split("/")[path.split("/").length-1];
+            byte[] data = new byte[inputStream.available()];
+            inputStream.read(data);
+            String diskfilename = filename;
+            String type=filename.substring(filename.lastIndexOf(".") + 1)
+                    .toLowerCase();
+
+            response.setContentType("image/"+type);
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + diskfilename + "\"");
+            response.setContentLength(data.length);
+            response.setHeader("Content-Range", "" + Integer.valueOf(data.length - 1));
+            response.setHeader("Accept-Ranges", "bytes");
+            response.setHeader("Etag", "W/\"9767057-1323779115364\"");
+
+            OutputStream os = response.getOutputStream();
+
+            os.write(data);
+            //先声明的流后关掉！
+            os.flush();
+            os.close();
+            inputStream.close();
+
+        } catch (HttpMessageNotWritableException e) {
+            e.fillInStackTrace();
+        }catch (IOException e){
+            e.fillInStackTrace();
+        }
+    }
+
+
     /**
      * 服务传视频
      * @param response

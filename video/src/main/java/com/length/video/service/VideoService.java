@@ -15,7 +15,13 @@ package com.length.video.service;
  * @since 2020-10-30 20:02:13
  */
 public interface VideoService extends IService<Video> {
+
         PageResult<Video> queryAll(PageDao page,Video video);
+
         PageResult<Video> queryFree(int begin,int count,Video video);
+
         void sendVideo(HttpServletResponse response,String path);
+
+        void sendCover(HttpServletResponse response,String path);
+
 }

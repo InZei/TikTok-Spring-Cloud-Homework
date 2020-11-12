@@ -32,11 +32,14 @@ public class Video extends Model<Video> {
 
     private Integer type;
 
+    private String coverUrl;
+
     Video(){
 
         createBy="";
         remarks="";
         name="";
+        coverUrl="";
         videoUrl="";
         remarks="";
         type=-1;
