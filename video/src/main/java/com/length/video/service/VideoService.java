@@ -20,4 +20,6 @@ public interface VideoService extends IService<Video> {
 
         void sendVideo(HttpServletResponse response,String path);
 
+        void sendCover(HttpServletResponse response,String path);
+
 }
