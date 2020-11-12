@@ -76,7 +76,7 @@ public class VideoController extends ApiController {
      * @return 新增结果
      */
     @PostMapping
-    public R insert(Video video,@RequestParam("file") MultipartFile file, HttpServletRequest request) {
+    public R insert(Video video,@RequestParam("file") MultipartFile file, @RequestParam("cover") MultipartFile cover, HttpServletRequest request) {
         video.setId(UUID.randomUUID().toString());
         video.setTime();
         try{
