@@ -31,6 +31,24 @@ public class VideoServiceImpl extends ServiceImpl<VideoDao, Video> implements Vi
     @Autowired(required = false)
     private VideoDao videoDao;
 
+
+    /**
+     *
+     * @param begin 开始数据
+     * @param count 多少个
+     * @param video
+     * @return 最简单的顺序推荐
+     */
+    public PageResult<Video> queryFree(int begin,int count,Video video){
+        List<Video> listSum=videoDao.queryAll(video,"",-1,0);
+        List<Video> listRes=videoDao.queryAll(video,"",begin,count);
+        PageResult<Video> res=new PageResult<>();
+
+        res.result=listRes;
+        res.total=listSum.size();
+        return res;
+    }
+
     /**
      * video数据搜索
      * @param video 视频

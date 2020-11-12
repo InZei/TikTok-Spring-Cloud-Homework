@@ -52,9 +52,25 @@ public class VideoController extends ApiController {
         return success(this.videoService.queryAll(page,video));
     }
 
+
+    /**
+     *
+     * @param begin
+     * @param count
+     * @param video
+     * @return
+     */
+    @GetMapping("free")
+    public R queryFree(int begin,int count,Video video){
+        return success(this.videoService.queryFree(begin,count,video));
+    }
+
+
     @JsonBackReference
     @GetMapping("/sendVideo")
-    public void  sendVideo( @RequestParam String path, HttpServletResponse response){
+    public void  sendVideo( String id, HttpServletResponse response){
+        Video video=videoService.getById(id);
+        String path=System.getProperty("user.dir")+"/source"+"/video/"+String.valueOf(video.getType())+"/"+video.getVideoUrl();
         this.videoService.sendVideo(response,path);
     }
 
@@ -83,15 +99,16 @@ public class VideoController extends ApiController {
             String pikId = UUID.randomUUID().toString().replaceAll("-", "");
             String fileExt = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1)
                     .toLowerCase();
-            String path=System.getProperty("user.dir")+"/source"+"/video/"+String.valueOf(video.getType())+"/";
+            String path=System.getProperty("user.dir")
+                    +"/source"+"/video/"+String.valueOf(video.getType())+"/";
             System.out.println(path);
             File dir = new File(path);
             File fileSave = new File(path, pikId+"."+fileExt);
             if(!dir.exists()){
-                dir.mkdir();
+                boolean re=dir.mkdirs();
             }
             file.transferTo(fileSave);
-            video.setVideoUrl(path+pikId+"."+fileExt);
+            video.setVideoUrl(pikId+"."+fileExt);
         }catch (IOException e){
             e.fillInStackTrace();
         }

@@ -6,7 +6,6 @@
         <groupId>length</groupId>
         <artifactId>length</artifactId>
         <version>1.0</version>
-        <relativePath/>
     </parent>
 
     <packaging>jar</packaging>
@@ -17,9 +16,9 @@
     <name>video</name>
     <description>Demo project for Spring Boot</description>
 
-    <properties>
-        <java.version>11</java.version>
-    </properties>
+<!--    <properties>-->
+<!--        <java.version>11</java.version>-->
+<!--    </properties>-->
 
     <dependencies>
         <dependency>
