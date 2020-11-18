@@ -9,10 +9,15 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.length.user.entity.User;
 import com.length.user.service.UserService;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * (User)表控制层
@@ -52,6 +57,18 @@ public class UserController extends ApiController {
         return success(this.userService.getById(id));
     }
 
+
+    /**
+     * headimg
+     * @param id
+     * @param response
+     */
+    @GetMapping("headimg")
+    public void headimg(@RequestParam String id, HttpServletResponse response){
+        User user=this.userService.getById(id);
+        String path=System.getProperty("user.dir")+"/source"+"/image/headImg/"+user.getHeadimgUrl();
+        this.userService.sendImg(response,path);
+    }
     /**
      * 新增数据
      *
@@ -61,6 +78,8 @@ public class UserController extends ApiController {
     @PostMapping
     public R insert(@RequestBody User user) {
         user.setId(user.getUsername());
+        user.setDault();
+
         return success(this.userService.save(user));
     }
 
@@ -71,7 +90,26 @@ public class UserController extends ApiController {
      * @return 修改结果
      */
     @PutMapping
-    public R update(@RequestBody User user) {
+    public R update(@RequestBody User user, MultipartFile headimg) {
+        if(headimg!=null){
+            try{
+                String pikId = UUID.randomUUID().toString().replaceAll("-", "");
+                String fileExt = headimg.getOriginalFilename().substring(headimg.getOriginalFilename().lastIndexOf(".") + 1)
+                        .toLowerCase();
+
+                String path=System.getProperty("user.dir")+"/source"+"/image/headImg/";
+                File dir = new File(path);
+                File fileSave = new File(path, pikId+"."+fileExt);
+                if(!dir.exists()){
+                    dir.mkdirs();
+                }
+                headimg.transferTo(fileSave);
+                user.setHeadimgUrl(pikId+"."+fileExt);
+
+            }catch (IOException e){
+                e.fillInStackTrace();
+            }
+        }
         return success(this.userService.updateById(user));
     }
 

@@ -27,6 +27,11 @@ public class User extends Model<User> {
     
     private String password;
 
+    public boolean setDault(){
+        createDate=new Date();
+        updateDate=new Date();
+        return true;
+    }
     
     public String getId() {
         return id;
