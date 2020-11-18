@@ -1,17 +1,5 @@
 spring:
   application:
     name: user
-
-server:
-  port: 8100
-
-eureka:
-  instance:
-    prefer-ip-address: true
-    hostname: ${spring.cloud.client.ip-address}
-    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}
-  client:
-    service-url:
-      defaultZone: http://${eureka.instance.hostname}:7979/eureka/
-
-
+  profiles:
+    active: dev

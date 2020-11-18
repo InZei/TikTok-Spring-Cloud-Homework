@@ -54,7 +54,6 @@ public class VideoController extends ApiController {
 
 
     /**
-<<<<<<< HEAD
      *
      * @param begin
      * @param count
