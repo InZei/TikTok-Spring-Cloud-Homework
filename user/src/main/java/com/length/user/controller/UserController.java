@@ -76,10 +76,9 @@ public class UserController extends ApiController {
      * @return 新增结果
      */
     @PostMapping
-    public R insert(@RequestBody User user) {
+    public R insert(User user) {
         user.setId(user.getUsername());
         user.setDault();
-
         return success(this.userService.save(user));
     }
 
@@ -90,7 +89,7 @@ public class UserController extends ApiController {
      * @return 修改结果
      */
     @PutMapping
-    public R update(@RequestBody User user, MultipartFile headimg) {
+    public R update( User user, MultipartFile headimg) {
         if(headimg!=null){
             try{
                 String pikId = UUID.randomUUID().toString().replaceAll("-", "");
@@ -110,6 +109,7 @@ public class UserController extends ApiController {
                 e.fillInStackTrace();
             }
         }
+        user.setDault();
         return success(this.userService.updateById(user));
     }
 
