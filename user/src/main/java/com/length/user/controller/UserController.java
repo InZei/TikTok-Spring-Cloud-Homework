@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.length.user.entity.User;
 import com.length.user.service.UserService;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,6 +27,7 @@ import java.util.UUID;
  * @since 2020-11-18 16:25:27
  */
 @RestController
+@Api
 @RequestMapping("user")
 public class UserController extends ApiController {
     /**
