@@ -1,7 +1,5 @@
 package com.length.user.controller;
 
-
-
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.api.ApiController;
 import com.baomidou.mybatisplus.extension.api.R;
@@ -9,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.length.user.entity.User;
 import com.length.user.service.UserService;
 import io.swagger.annotations.Api;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -78,11 +77,26 @@ public class UserController extends ApiController {
      * @return 新增结果
      */
     @PostMapping
-    public R insert(@RequestBody User user) {
+    public R insert(User user) {
         user.setId(user.getUsername());
+        user.setPassword(DigestUtils.md5DigestAsHex(user.getPassword().getBytes()));
         user.setDault();
-
         return success(this.userService.save(user));
+    }
+
+    @GetMapping("check")
+    public R check(String username,String password){
+        User user=this.userService.getById(username);
+        if(user==null){
+            return success("不存在该用户名");
+        }else{
+            String md5Pas=DigestUtils.md5DigestAsHex(password.getBytes());
+            if(md5Pas.equals(user.getPassword())){
+                return success("登录成功");
+            }else{
+                return success("用户名或密码错误");
+            }
+        }
     }
 
     /**
@@ -92,7 +106,7 @@ public class UserController extends ApiController {
      * @return 修改结果
      */
     @PutMapping
-    public R update(@RequestBody User user, MultipartFile headimg) {
+    public R update( User user, MultipartFile headimg) {
         if(headimg!=null){
             try{
                 String pikId = UUID.randomUUID().toString().replaceAll("-", "");
@@ -112,6 +126,9 @@ public class UserController extends ApiController {
                 e.fillInStackTrace();
             }
         }
+        user.setDault();
+        if(user.getPassword()!=null&&user.getPassword()!="")
+            user.setPassword(DigestUtils.md5DigestAsHex(user.getPassword().getBytes()));
         return success(this.userService.updateById(user));
     }
 

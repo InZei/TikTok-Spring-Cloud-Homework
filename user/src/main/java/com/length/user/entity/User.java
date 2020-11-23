@@ -27,6 +27,13 @@ public class User extends Model<User> {
     
     private String password;
 
+    public  User(){
+        id="";
+        remarks="什么也没有留下。";
+        headimgUrl="";
+
+    }
+
     public boolean setDault(){
         createDate=new Date();
         updateDate=new Date();
